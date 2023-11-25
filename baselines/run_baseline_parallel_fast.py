@@ -83,7 +83,8 @@ if __name__ == '__main__':
         model = PPO('CnnPolicy', env, verbose=1, n_steps=ep_length // 8, batch_size=128, n_epochs=3, gamma=0.998, tensorboard_log=sess_path)
     
     for i in range(learn_steps):
-        model.learn(total_timesteps=(ep_length)*num_cpu*1000, callback=CallbackList(callbacks))
+        # do a slightly lower set of timesteps.
+        model.learn(total_timesteps=(ep_length)*num_cpu*10, callback=CallbackList(callbacks))
 
     if use_wandb_logging:
         run.finish()
