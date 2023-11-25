@@ -33,7 +33,7 @@ if __name__ == '__main__':
 
     env_config = {
                 'headless': True, 'save_final_state': True, 'early_stop': False,
-                'action_freq': 24, 
+                'action_freq': 12, 
                 'init_state': '../has_pokedex_nballs.state', 
                 # 'init_state': '../PokemonRed.gb.state', 
                 'max_steps': ep_length, 
