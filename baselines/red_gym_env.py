@@ -100,7 +100,7 @@ def output_images(input_images):
         input_image.save(timg.stdin, "PNG")
         timg.stdin.flush()
         timg.stdin.close()
-        time.sleep(0.1)
+        timg.wait()
 
     timg = subprocess.Popen(["timg", "--color8", "-W", "-"], stdin=subprocess.PIPE)
     new_gif[-1].save(timg.stdin, "PNG")
