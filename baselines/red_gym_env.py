@@ -967,8 +967,8 @@ class RedGymEnv(Env):
             # Make caught_poke scale with every poke caught
             # Gottach catch em all! Must. Catch. All. Pokemon!
             "caught_poke": self.reward_scale * caught_poke_count * caught_poke_count * 4,
-            'seen_poke': self.reward_scale * seen_poke_count * 400,
-            "explore": self.reward_scale * self.get_knn_reward(),
+            'seen_poke': self.reward_scale * seen_poke_count * 4,
+            "explore": round(self.reward_scale * self.get_knn_reward(), 2),
         }
 
         return state_scores
