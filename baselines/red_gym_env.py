@@ -573,7 +573,10 @@ class RedGymEnv(Env):
             )
             items_count = sum(
             [self.bit_count(self.read_m(i)) for i in range(0xD31F, 0xD345, 0x2)]
-            )
+            ) + (sum(
+            [self.bit_count(self.read_m(i)) for i in range(0xD53C, 0xD59E, 0x2)]
+            ) // 2) # include items in PC but with less weight
+
             image = Image.fromarray(self.render(reduce_res=False))
             score = sum([val for _, val in self.progress_reward.items()])
             oi = add_string_overlay(
@@ -847,6 +850,8 @@ class RedGymEnv(Env):
             for a in [0xD18C, 0xD1B8, 0xD1E4, 0xD210, 0xD23C, 0xD268]
         ]
         return max(sum(poke_levels) - 4, 0)  # subtract starting pokemon level
+    
+    
 
     def get_levels_reward(self):
         explore_thresh = 22
@@ -935,6 +940,17 @@ class RedGymEnv(Env):
             print(f'seen_poke_count : {seen_poke_count}')
             print(f'oak_parcel: {oak_parcel} oak_pokedex: {oak_pokedex} all_events_score: {all_events_score}')
         """
+        seen_poke_count = sum(
+            [self.bit_count(self.read_m(i)) for i in range(0xD30A, 0xD31D)]
+            )
+        caught_poke_count = sum(
+            [self.bit_count(self.read_m(i)) for i in range(0xD2F7, 0xD309)]
+            )
+        items_count = sum(
+            [self.bit_count(self.read_m(i)) for i in range(0xD31F, 0xD345, 0x2)]
+            ) + (sum(
+            [self.bit_count(self.read_m(i)) for i in range(0xD53C, 0xD59E, 0x2)]
+            ) // 2) # include items in PC but with less weight
 
         state_scores = {
             "event": self.reward_scale * self.update_max_event_rew(),
@@ -946,7 +962,12 @@ class RedGymEnv(Env):
             "badge": self.reward_scale * self.get_badges() * 5,
             #'op_poke': self.reward_scale*self.max_opponent_poke * 800,
             #'money': self.reward_scale* money * 3,
-            #'seen_poke': self.reward_scale * seen_poke_count * 400,
+            
+            "item_count": self.reward_scale * items_count,
+            # Make caught_poke scale with every poke caught
+            # Gottach catch em all! Must. Catch. All. Pokemon!
+            "caught_poke": self.reward_scale * caught_poke_count * caught_poke_count * 4,
+            'seen_poke': self.reward_scale * seen_poke_count * 400,
             "explore": self.reward_scale * self.get_knn_reward(),
         }
 
