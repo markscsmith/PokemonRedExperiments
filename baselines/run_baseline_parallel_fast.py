@@ -27,7 +27,7 @@ def make_env(rank, env_conf, seed=0):
 if __name__ == '__main__':
 
     use_wandb_logging = False
-    ep_length = 2048 * 100
+    ep_length = 2048 * 4
     sess_id = str(uuid.uuid4())[:8]
     sess_path = Path(f'session_{sess_id}')
 
