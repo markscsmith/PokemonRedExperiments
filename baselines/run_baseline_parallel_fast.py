@@ -69,7 +69,7 @@ if __name__ == '__main__':
     #env_checker.check_env(env)
     learn_steps = 40
     # put a checkpoint here you want to start from
-    file_name = 'session_e41c9eff/poke_38207488_steps' 
+    file_name = '/session_4da05e87_main_good/poke_439746560_steps' 
     
     if exists(file_name + '.zip'):
         print('\nloading checkpoint')
